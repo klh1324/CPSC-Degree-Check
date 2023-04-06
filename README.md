@@ -1,1 +1,2 @@
-# Course-Scheduler
+# UBC Course Scheduler
+
