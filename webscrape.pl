@@ -24,15 +24,17 @@ extract_course_titles(Webpage, Titles) :-
 extract_course_links(CourseLinks) :-
     download_webpage(Webpage),
     xpath(Webpage, //(a(@href)), Links),
-    findall(Link, (member(Link, Links), sub_string(Link, _, _, _, 'course=')), CourseLinks).
+    findall(Links, (sub_string(Links, _, _, _, 'course=')), CourseLinks).
 
 % Extract the course information from each course webpage
 extract_course_info(CourseLink, Course) :-
-    atom_concat('https://courses.students.ubc.ca', CourseLink, URL),
+    atom_concat('https://courses.students.ubc.ca', CourseLink, PROTO_URL),
+    % Remove "&amp;"
+    re_replace("&amp;"/g, "&", PROTO_URL, URL),
     http_open(URL, In, []),
     load_html(In, Webpage, []),
     close(In),
-    xpath(Webpage, //(td(normalize_space)), Tds),
+    xpath(Webpage, //(td(normalize_space)), Tds), write(Tds),
     maplist(atom_codes, TdCodes, Tds),
     [StatusCodes, CourseCodes, TitleCodes, SectionCodes, ActivityCodes, TermCodes, DeliveryCodes, DaysCodes, StartTimeCodes, EndTimeCodes] = TdCodes,
     dif(CourseCodes, ''),
