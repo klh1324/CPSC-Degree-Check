@@ -57,7 +57,7 @@ print_lines([Line|Rest]) :-
 parse_courses([]).
 parse_courses([Course|Rest]) :-
     parse_course(Course, Subject, Code),
-    write(' the subject number is '),
+    write('the subject number is '),
     write(Subject),
     write(' and the code number is '),
     write(Code),
