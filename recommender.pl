@@ -1,11 +1,19 @@
+:- include('requirement_check.pl').
+
 % start: The entry point to the recommendation program 
 start :-
     write('Hi there! Thanks for using this reccomendation system!\n'),
     write('Enter the filename where your taken courses are. It should be enrapped in quotes (e.g. \'courses.txt\'.) \n'),
     read(Input),
-    write('You have taken the following courses:\n'),
+    write('\nYou have taken the following courses:\n'),
     read_lines(Input, Courses),
-    parse_courses(Courses),
+    print_lines(Courses),
+    total_credits_check(Courses),
+    communication_check(Courses),
+    arts_check(Courses),
+    required_check(Courses),
+    upper_year_cpsc_check(Courses),
+    science_breadth_check(Courses),
     write('Bye!\n').
 
 
@@ -63,13 +71,4 @@ parse_courses([Course|Rest]) :-
     write(Code),
     nl,
     parse_courses(Rest).
-
-
-% parse_course(Course, Subject, Code)/3: A course (e.g "CPSC 110") is parsed seperately into subject and code (e.g. "CPSC" and "110")
-% Arguments:
-%   Course: A string to be parsed.
-%   Subject: The subject of the course.
-%   Code: The code of the course.
-parse_course(Course, Subject, Code) :-
-    split_string(Course, " ", "", [Subject, Code]).
 
