@@ -30,7 +30,7 @@ extract_course_info(URL, CourseInfo) :-
     xpath(Webpage, //(header)/h1(@class='blog-post-title'), CourseCode), xpath(CourseCode, /self(normalize_space), Cc),
     xpath(Webpage, //(header)/h3(@class='blog-post-title mb-0'), Title), xpath(Title, /self(normalize_space), Ti),
     xpath(Webpage, //(div)/p(@class='card-text'), Description), xpath(Description, /self(normalize_space), Desc),
-    atomic_list_concat([Cc, ' - ', Ti, ' - ', Desc], Courseinfo), write(Courseinfo).
+    atomic_list_concat([Cc, ' - ', Ti, ' : \n', 'Course Description - ', Desc], Courseinfo), write(Courseinfo).
     %atomics_to_string(Cc,CCC), atomics_to_string(Ti, TTT), atomics_to_string(Desc, Dess), 
     %atom_concat(Cc, Ti, acc1), write(acc1).
     % xpath(Webpage, //h2(@class=mb-0), Title),
@@ -45,3 +45,4 @@ extract_course_info(URL, CourseInfo) :-
 get_info(Number, Description) :-
     url(URL), atom_concat(URL, 'cpsc-', Pre_Course_url), atom_concat(Pre_Course_url, Number, Course_url),
     extract_course_info(Course_url, Description).
+
