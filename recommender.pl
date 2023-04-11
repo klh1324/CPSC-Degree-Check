@@ -14,6 +14,7 @@ start :-
     required_check(Courses),
     upper_year_cpsc_check(Courses),
     science_breadth_check(Courses),
+    upper_year_credit_check(Courses),
     write('Bye!\n').
 
 
