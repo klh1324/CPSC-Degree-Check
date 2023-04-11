@@ -28,9 +28,9 @@ total_credits_check(Courses) :-
 print_total_credits_check_message(NumCredits) :-
 	NumCredits < 120,
 	Remainder is 120 - NumCredits,
-	write('You still have '), 
+	write('You still need '), 
 	write(Remainder), 
-	write(' number of credits to hit the Total Credits Requirement!\n').
+	write(' number of credits to fulfill the Total Credits Requirement.\n').
 print_total_credits_check_message(NumCredits) :-
 	NumCredits >= 120,
 	write('Congrats! You have fulfilled the Total Credits Requirement!\n').
@@ -88,7 +88,7 @@ print_communication_check_message(NumCredits) :-
 	Remainder is 6 - NumCredits,
 	write('You still need '), 
 	write(Remainder), 
-	write(' number of credits remaining to hit the Communication Requirement!\n').
+	write(' number of credits to fulfill the Communication Requirement!\n').
 print_communication_check_message(NumCredits) :-
 	NumCredits >= 6,
 	write('Congrats! You have fulfilled the Communication Requirement!\n').
@@ -120,9 +120,9 @@ arts_check(Courses) :-
 print_arts_check_message(NumCredits) :-
 	NumCredits < 12,
 	Remainder is 12 - NumCredits,
-	write('You still have '), 
+	write('You still need '), 
 	write(Remainder), 
-	write(' number of credits remaining to fulfill the Arts Requirement!\n').
+	write(' number of credits to fulfill the Arts Requirement!\n').
 print_arts_check_message(NumCredits) :-
 	NumCredits >= 12,
 	write('Congrats! You have fulfilled the Arts Requirement!\n').
