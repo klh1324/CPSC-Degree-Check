@@ -1,22 +1,32 @@
 :- include('requirement_check.pl').
-:- include('course_desc.pl').
+
+:- use_module(library(http/http_open)).
+:- use_module(library(sgml)).
+:- use_module(library(xpath)).
+:- use_module(library(apply)).
+:- use_module(library(pcre)).
+:- use_module(library(listing)).
+
+url('https://ubccsss.org/services/courses/').
+
 
 % start: The entry point to the recommendation program 
 start :-
-    write('Hi there! Thanks for using this reccomendation system!\n'),
-    write('Enter the filename where your taken courses are. It should be enrapped in quotes (e.g. \'courses.txt\'.) \n'),
+    write('Hi there! Thanks for using this recommendation system!\n'),
+    write('Enter the filename where your courses are. It should be enrapped in quotes (e.g. \'courses.txt\'.) \n'),
     read(Input),
     write('\nYou have taken the following courses:\n'),
     read_lines(Input, Courses),
     print_lines(Courses),
     total_credits_check(Courses),
     communication_check(Courses),
-    arts_check(Courses),
+    arts_check(Courses),    
     required_check(Courses),
     upper_year_cpsc_check(Courses),
     science_breadth_check(Courses),
     upper_year_credit_check(Courses),
     nl,
+    write('**************************************************************************\n'),
     display_cpsc_course_info.
 
 
@@ -61,34 +71,22 @@ print_lines([Line|Rest]) :-
     print_lines(Rest).
 
 
-% parse_courses(Courses)/1: Parses entire list of courses and checks graduation requirements.
-% Arguments:
-%   Courses: A list of courses read from the text file.
-%
-parse_courses([]).
-parse_courses([Course|Rest]) :-
-    parse_course(Course, Subject, Code),
-    write('the subject number is '),
-    write(Subject),
-    write(' and the code number is '),
-    write(Code),
-    nl,
-    parse_courses(Rest).
+%________________________________________________________________________________________________________________________________
+
+% CPSC Course Description Scraper 
+
 
 
 % display_cpsc_course_info/0: Recursive predicate that allows users to find CPSC course descriptions.
 %
 display_cpsc_course_info :-
     nl,
-    write('**************************************************************************'),
-    write('**************************************************************************'),
-    nl,
-    write("If you are interested in knowing more about CPSC courses, enter a course number (e.g. 220) and we will give you some corresponding description. To quit, just type q\n"),
+    write("If you are interested in knowing more about CPSC courses, enter a course number (e.g. 221). To quit, type q\n"),
     read(Input),
     handle_input(Input).
 
 
-% handle_input(Input)/0: Handles user input. Decides whether to quit program or search for CPSC course description.
+% handle_input(Input)/1: Handles user input. Decides whether to quit program or search for CPSC course description.
 % Arguments:
 %   Input: The user input. If q, "q", quit, or "quit" the program terminates. Otherwise input should be CPSC course number (e.g. 221).
 handle_input(q) :- 
@@ -99,15 +97,46 @@ handle_input(quit) :-
     write("Quitting!\n"), halt.
 handle_input("quit") :-
     write("Quitting!\n"), halt.
-
-
 handle_input(Number) :- 
-    write("get_info being called\n"),
-    get_info(Number, Description),
-    write("\nget_info finish"),
-    write(Description),
-    write("\n description done\n"),
+    get_info(Number),
     display_cpsc_course_info.
 
 
 
+% get_info(Number)/1: Given a CPSC course number, tries to scrape description from the ubccss website.
+% Arguments:
+%   Number: A valid CPSC course number. 
+% 
+get_info(Number) :-
+    url(URL),
+    atom_concat(URL, 'cpsc-', Pre_Course_url),
+    atom_concat(Pre_Course_url, Number, Course_url),
+    extract_course_info(Course_url).
+
+
+% extract_course_info(Url)/1: Given a URL, tried to scrape the CPSC course description from it
+% Arguments:
+%   URL: The CPSC course URL for ubccsss 
+%
+extract_course_info(URL) :- 
+    catch(http_open(URL, In, []), _, (
+        handle_error
+    )),
+    load_html(stream(In), Webpage, []),
+    close(In),
+    xpath(Webpage, //(header)/h1(@class='blog-post-title'), CourseCode), 
+    xpath(CourseCode, /self(normalize_space), Cc),
+    xpath(Webpage, //(header)/h3(@class='blog-post-title mb-0'), Title),
+    xpath(Title, /self(normalize_space), Ti),
+    xpath(Webpage, //(div)/p(@class='card-text'), Description),
+    xpath(Description, /self(normalize_space), Desc),
+    atomic_list_concat([Cc, ' - ', Ti, ' : ', 'Course Description - ', Desc], CourseInfo),
+    write(CourseInfo),
+    nl.
+
+
+% handle_error/0: Given a http_load error, loops back to original prompt asking user for valid CPSC course number.
+% 
+handle_error :-
+    write("Sorry, that was not a valid CPSC course number"),
+    display_cpsc_course_info.

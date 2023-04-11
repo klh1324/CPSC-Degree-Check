@@ -85,7 +85,7 @@ communication_check(Courses) :-
 print_communication_check_message(NumCredits) :-
 	NumCredits < 6,
 	Remainder is 6 - NumCredits,
-	write('You still have '), 
+	write('You still need '), 
 	write(Remainder), 
 	write(' number of credits remaining to hit the Communication Requirement!\n').
 print_communication_check_message(NumCredits) :-
@@ -107,6 +107,7 @@ arts_check(Courses) :-
 	write("\n3. Arts Requirements (12 Credits) :\n"),
     get_arts_credits(Courses, TotalCredit),
     write("The total number of arts credits you have is: "),
+
     write(TotalCredit),
     nl,
     print_arts_check_message(TotalCredit).
