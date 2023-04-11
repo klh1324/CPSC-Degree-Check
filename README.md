@@ -2,10 +2,11 @@
 Authors: Kenji, Joel 
 
 ## About:
-This project is 100% written in prolog, and will be able to check your graduation requirements for UBC CS degree! The **instructions** are simple:
+This project is 100% written in prolog, and will be able to check your graduation requirements for UBC CS degree. The **instructions** are simple:
 
 * Create a text file (i.e. courses.txt), and for each line enter a course you have completed, with a space sepearting the course subject and number (e.g. 'CPSC 110')
 	* Be Careful! Don't leave leading or trailing whitespaces on any line!
+	* courses.txt and courses2.txt are good examples
 * Start SWI-Prolog with `swipl`
 * Type `?- [recommender].`
 * Type `start.`
