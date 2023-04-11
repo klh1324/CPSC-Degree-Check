@@ -1,4 +1,5 @@
 :- include('requirement_check.pl').
+:- include('course_desc.pl').
 
 % start: The entry point to the recommendation program 
 start :-
@@ -15,7 +16,8 @@ start :-
     upper_year_cpsc_check(Courses),
     science_breadth_check(Courses),
     upper_year_credit_check(Courses),
-    write('Bye!\n').
+    nl,
+    display_cpsc_course_info.
 
 
 % read_lines(File, Lines)/2: reads all the lines from a file. If the provided filename is invalid tries again and prompts the user to enter a valid filename.
@@ -72,4 +74,40 @@ parse_courses([Course|Rest]) :-
     write(Code),
     nl,
     parse_courses(Rest).
+
+
+% display_cpsc_course_info/0: Recursive predicate that allows users to find CPSC course descriptions.
+%
+display_cpsc_course_info :-
+    nl,
+    write('**************************************************************************'),
+    write('**************************************************************************'),
+    nl,
+    write("If you are interested in knowing more about CPSC courses, enter a course number (e.g. 220) and we will give you some corresponding description. To quit, just type q\n"),
+    read(Input),
+    handle_input(Input).
+
+
+% handle_input(Input)/0: Handles user input. Decides whether to quit program or search for CPSC course description.
+% Arguments:
+%   Input: The user input. If q, "q", quit, or "quit" the program terminates. Otherwise input should be CPSC course number (e.g. 221).
+handle_input(q) :- 
+    write("Quitting!\n"), halt.
+handle_input("q") :- 
+    write("Quitting!\n"), halt.
+handle_input(quit) :-
+    write("Quitting!\n"), halt.
+handle_input("quit") :-
+    write("Quitting!\n"), halt.
+
+
+handle_input(Number) :- 
+    write("get_info being called\n"),
+    get_info(Number, Description),
+    write("\nget_info finish"),
+    write(Description),
+    write("\n description done\n"),
+    display_cpsc_course_info.
+
+
 

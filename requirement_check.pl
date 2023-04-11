@@ -106,6 +106,7 @@ print_communication_check_message(NumCredits) :-
 arts_check(Courses) :-
 	write("\n3. Arts Requirements (12 Credits) :\n"),
     get_arts_credits(Courses, TotalCredit),
+    write("The total number of arts credits you have is: "),
     write(TotalCredit),
     nl,
     print_arts_check_message(TotalCredit).
@@ -208,8 +209,8 @@ print_required_check(Courses, Requirements) :-
 
 %________________________________________________________________________________________________________________________________
 
-% 5. Upper Year CPSC Requirements - 9 credits CPSC 300+
-% 6 credits CPSC 400+
+% 5. Upper Year CPSC Requirements - 9 credits CPSC 300+, 9 credits CPSC 400+
+
 
 
 % upper_year_cpsc_check(Courses)/1: the check for upper-year CPSC credits.
@@ -227,7 +228,6 @@ upper_year_cpsc_check(Courses) :-
 	print_400_cpsc_check(Credits400Plus).
 
 
-
 % get_300_level_cpsc_credits(Courses, Credits)/2: Gets number of credits for CPSC courses >= 300, and <400.
 % Arguments:
 %   Courses: The list of courses, each one a string.
@@ -239,6 +239,7 @@ get_300_level_cpsc_credits([Head|Tail], Credits) :-
 	check_300_plus_cpsc(Subject, Number, C),
 	get_300_level_cpsc_credits(Tail, RemainingCredits),
 	Credits is C + RemainingCredits.
+
 
 % check_300_plus_cpsc(Subject, Number, Credits)/3: Helper function for get_300_level_cpsc_credits.
 %
@@ -261,6 +262,7 @@ get_400_plus_cpsc_credits([Head | Tail], Credits) :-
 	check_400_plus_cpsc(Subject, Number, C),
 	get_400_plus_cpsc_credits(Tail, RemainingCredits),
 	Credits is C + RemainingCredits.
+
 
 % check_400_plus_cpsc(Subject, Number, Credits)/3: Helper function for get_300_level_cpsc_credits.
 %
@@ -396,6 +398,7 @@ total_upper_year_credits([Head | Tail], Credits) :-
 % Helper Functions
 
 
+
 % parse_course(Course, Subject, Code)/3: A course (e.g "CPSC 110") is parsed seperately into subject and code (e.g. "CPSC" and "110")
 % Arguments:
 %   Course: A string to be parsed.
@@ -404,7 +407,6 @@ total_upper_year_credits([Head | Tail], Credits) :-
 parse_course(Course, Subject, Code) :-
     split_string(Course, " ", "", [Subject, Code]).
     
-
 
 % intersect_length(List1, List2, Length)/3: Returns the length of the intersection list between List1 and List2
 % Arguments:
@@ -420,7 +422,6 @@ intersect_length([Head|Rest], List2, Length) :-
     member(Head, List2),
     intersect_length(Rest, List2, Length1),
     Length is Length1 + 1.
-
 intersect_length([Head|Rest], List2, Length) :-
     \+ member(Head, List2),
     intersect_length(Rest, List2, Length).    

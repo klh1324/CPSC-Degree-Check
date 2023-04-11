@@ -150,5 +150,3 @@ required(["MATH 101", "MATH 103", "MATH 105", "MATH 121"]).
 required(["MATH 200", "MATH 226"]).
 required(["MATH 221", "MATH 223"]).
 required(["STAT 241", "STAT 351", "STAT 200"]).
-
-
