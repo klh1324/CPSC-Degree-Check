@@ -1,4 +1,5 @@
 :- use_module(library(lists)).
+:- use_module(library(strings)).
 :- include('knowledgebase.pl').
 
 %________________________________________________________________________________________________________________________________
@@ -7,7 +8,7 @@
 
 
 
-% total_credits_check(Courses)/1: the check for total number of credits required.
+% total_credits_check(Courses)/1: the check for total number of credits requirement.
 % Arguments:
 %   Courses: The list of courses, each one a string.
 %
@@ -107,7 +108,6 @@ arts_check(Courses) :-
 	write("\n3. Arts Requirements (12 Credits) :\n"),
     get_arts_credits(Courses, TotalCredit),
     write("The total number of arts credits you have is: "),
-
     write(TotalCredit),
     nl,
     print_arts_check_message(TotalCredit).
@@ -122,7 +122,7 @@ print_arts_check_message(NumCredits) :-
 	Remainder is 12 - NumCredits,
 	write('You still have '), 
 	write(Remainder), 
-	write(' number of credits remaining to hit the Arts Requirement!\n').
+	write(' number of credits remaining to fulfill the Arts Requirement!\n').
 print_arts_check_message(NumCredits) :-
 	NumCredits >= 12,
 	write('Congrats! You have fulfilled the Arts Requirement!\n').
@@ -229,7 +229,7 @@ upper_year_cpsc_check(Courses) :-
 	print_400_cpsc_check(Credits400Plus).
 
 
-% get_300_level_cpsc_credits(Courses, Credits)/2: Gets number of credits for CPSC courses >= 300, and <400.
+% get_300_level_cpsc_credits(Courses, Credits)/2: Gets number of credits for CPSC courses >= 300, and < 400.
 % Arguments:
 %   Courses: The list of courses, each one a string.
 % 	Credits: An integer, the number of credits.
@@ -242,7 +242,7 @@ get_300_level_cpsc_credits([Head|Tail], Credits) :-
 	Credits is C + RemainingCredits.
 
 
-% check_300_plus_cpsc(Subject, Number, Credits)/3: Helper function for get_300_level_cpsc_credits.
+% check_300_plus_cpsc(Subject, Number, Credits)/3: Helper function for get_300_level_cpsc_credits/2
 %
 check_300_plus_cpsc("CPSC", Number, Credits) :-
 	atom_number(Number, Atom),
@@ -265,7 +265,7 @@ get_400_plus_cpsc_credits([Head | Tail], Credits) :-
 	Credits is C + RemainingCredits.
 
 
-% check_400_plus_cpsc(Subject, Number, Credits)/3: Helper function for get_300_level_cpsc_credits.
+% check_400_plus_cpsc(Subject, Number, Credits)/3: Helper function for get_400_plus_cpsc_credits/2
 %
 check_400_plus_cpsc("CPSC", Number, Credits) :-
 	atom_number(Number, Atom),
@@ -285,7 +285,7 @@ print_300_cpsc_check(Credits) :-
 	write(Credits),
 	write(" credits for 300+ CPSC courses. You need "),
 	write(Remainder),
-	write(" credits to satisfy the requirement.\n").
+	write(" more credits to satisfy the requirement.\n").
 print_300_cpsc_check(Credits) :-
 	Credits >= 9,
 	write("Congrats! You have satisfied the 300+ CPSC credit requirement!\n").
@@ -302,7 +302,7 @@ print_400_cpsc_check(Credits) :-
 	write(Credits),
 	write(" credits for 400+ CPSC courses. You need "),
 	write(Remainder),
-	write(" credits to satisfy the requirement.\n").
+	write(" more credits to satisfy the requirement.\n").
 print_400_cpsc_check(Credits) :-
 	Credits >= 9,
 	write("Congrats! You have satisfied the 400+ CPSC credit requirement!\n").
@@ -406,8 +406,7 @@ total_upper_year_credits([Head | Tail], Credits) :-
 %   Subject: The subject of the course.
 %   Code: The code of the course.
 parse_course(Course, Subject, Code) :-
-    split_string(Course, " ", "", [Subject, Code]).
-    
+    split_string(Course, " ", "", [Subject, Code]).    
 
 % intersect_length(List1, List2, Length)/3: Returns the length of the intersection list between List1 and List2
 % Arguments:

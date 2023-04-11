@@ -13,16 +13,14 @@ course("CPSC 319", 4).
 course("CPSC 310", 4).
 course("CPSC 448", 6).
 
-% default_credits(Credits)/1: the default number of credits for a course (== 3)
-% Arguments:
-%   Credits: The default credit value for a course is 3
+% default_credits: the default number of credits for a course (== 3)
 %
 default_credits(3).
 
 
 % comm_course(Course)/1: Courses that fulfill the communication requirement
 % Arguments:
-%   Course: A string, representing a course
+%   Course: A string, representing a Communication course
 %
 comm_course("WRDS 150").
 comm_course("SCIE 113").
@@ -36,7 +34,7 @@ comm_course("ENGL 121").
 
 % arts_course(Course)/1: Courses that fulfill the arts requirement
 % Arguments:
-%   Course: A string, representing a course
+%   Course: A string, representing an Arts course
 %
 arts_subject("ACAM").
 arts_subject("AFST").
@@ -136,9 +134,9 @@ arts_subject("WRDS").
 
 % required(Course)/1: Describes required courses for CPSC major
 % Arguments:
-%   Course: A lsit of string, each representing a course that can be equally substitutied with each othger
+%   Course: A list of strings, each representing a course that can be equally substitutied with each other for the requirement.
 %
-required(["CPSC 100"]).
+required(["CPSC 110"]).
 required(["CPSC 121"]).
 required(["CPSC 210"]).
 required(["CPSC 221"]).

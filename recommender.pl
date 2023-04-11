@@ -7,7 +7,9 @@
 :- use_module(library(pcre)).
 :- use_module(library(listing)).
 
-url('https://ubccsss.org/services/courses/').
+% Start program with:
+% [recommender].
+% start.
 
 
 % start: The entry point to the recommendation program 
@@ -75,7 +77,8 @@ print_lines([Line|Rest]) :-
 
 % CPSC Course Description Scraper 
 
-
+% Base URL to scrape from
+url('https://ubccsss.org/services/courses/').
 
 % display_cpsc_course_info/0: Recursive predicate that allows users to find CPSC course descriptions.
 %
